@@ -110,7 +110,7 @@ print_status "Dependencies installed successfully"
 # Ask for environment variables
 print_info "Configuration needed..."
 echo ""
-read -p "Enter BOT_TOKEN: " BOT_TOKEN
+read -p "Enter BOT_TOKEN: " BOT_TOKEN </dev/tty
 
 # Create .env file
 print_info "Creating .env file..."
