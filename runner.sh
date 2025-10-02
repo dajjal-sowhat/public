@@ -119,6 +119,11 @@ BOT_TOKEN=$BOT_TOKEN
 EOF
 print_status ".env file created"
 
+# Run Prisma DB push
+print_info "Running Prisma database migration..."
+npx prisma db push
+print_status "Database schema pushed successfully"
+
 # Start application with PM2
 print_info "Starting application with PM2..."
 pm2 start npm --name "$FOLDER_NAME" -- run dev
