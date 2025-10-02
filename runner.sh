@@ -30,7 +30,9 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         *)
-            REPO_URL="$1"
+            if [ -z "$REPO_URL" ]; then
+                REPO_URL="$1"
+            fi
             shift
             ;;
     esac
@@ -40,14 +42,17 @@ done
 if [ -z "$REPO_URL" ]; then
     print_error "Repository URL is required!"
     echo "Usage: curl [SCRIPT_URL] | bash -s -- -o [REPOSITORY_URL]"
+    echo "Example: curl [SCRIPT_URL] | bash -s -- -o https://github.com/user/repo.git"
     exit 1
 fi
 
 print_info "Starting installation process..."
 print_info "Repository: $REPO_URL"
 
-# Extract folder name from repository URL
-FOLDER_NAME=$(basename "$REPO_URL" .git)
+# Extract folder name from repository URL and add random characters
+BASE_FOLDER_NAME=$(basename "$REPO_URL" .git)
+RANDOM_SUFFIX=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 6 | head -n 1)
+FOLDER_NAME="${BASE_FOLDER_NAME}-${RANDOM_SUFFIX}"
 print_info "Project folder: $FOLDER_NAME"
 
 # Install Git if not present
